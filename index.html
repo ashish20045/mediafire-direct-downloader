@@ -104,9 +104,52 @@
       padding: 4px 10px;
       border-radius: 999px;
       background: rgba(8, 47, 73, 0.85);
-      border: 1px solid rgba(56, 189, 248, 0.9);      margin-bottom: 10px;
+      border: 1px solid rgba(56, 189, 248, 0.9);
+      color: #bae6fd;
+    }
+
+    .badge-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 999px;
+      background: #22c55e;
+      box-shadow: 0 0 12px rgba(34, 197, 94, 1);
+    }
+
+    .tag {
+      font-size: 10px;
+      color: #9ca3af;
+    }
+
+    h1 {
+      font-size: 22px;
+      margin-bottom: 4px;
+    }
+
+    .sub {
+      font-size: 12px;
+      color: #9ca3af;
+      margin-bottom: 16px;
+    }
+
+    .label {
+      font-size: 12px;
+      margin-bottom: 6px;
+      display: block;
+      color: #e5e7eb;
+    }
+
+    #mf_url {
+      width: 100%;
+      padding: 11px 12px;
+      border-radius: 12px;
+      border: 1px solid rgba(75, 85, 99, 0.9);
+      background: linear-gradient(135deg, #020617, #020617);
+      color: #e5e7eb;
+      font-size: 13px;
+      margin-bottom: 10px;
       outline: none;
-      transition: border-color 0.15s ease, box-shadow 0.15s ease, background 0.15s ease;
+      transition: border-color 0.15s ease, box-shadow 0.15s ease, background 0.15s ease, transform 0.1s ease;
     }
 
     #mf_url::placeholder {
@@ -115,8 +158,9 @@
 
     #mf_url:focus {
       border-color: #22c55e;
-      box-shadow: 0 0 0 1px rgba(34, 197, 94, 0.6);
-      background: radial-gradient(circle at top left, #0b1120, #020617 55%);
+      box-shadow: 0 0 0 1px rgba(34, 197, 94, 0.7);
+      background: radial-gradient(circle at top left, #020617, #020617 60%);
+      transform: translateY(-1px);
     }
 
     button {
@@ -127,11 +171,11 @@
       font-size: 14px;
       font-weight: 600;
       background: linear-gradient(135deg, #22c55e, #0ea5e9, #a855f7);
-      background-size: 200% 200%;
+      background-size: 220% 220%;
       color: #020617;
       cursor: pointer;
-      transition: transform 0.12s ease, box-shadow 0.12s ease, opacity 0.12s ease, background-position 1.5s ease;
-      box-shadow: 0 18px 35px rgba(59, 130, 246, 0.65);
+      transition: transform 0.12s ease, box-shadow 0.12s ease, opacity 0.12s ease, background-position 1.4s ease;
+      box-shadow: 0 18px 36px rgba(59, 130, 246, 0.7);
     }
 
     button:hover {
@@ -140,7 +184,7 @@
 
     button:active {
       transform: translateY(1px) scale(0.985);
-      box-shadow: 0 10px 22px rgba(59, 130, 246, 0.7);
+      box-shadow: 0 11px 24px rgba(59, 130, 246, 0.75);
       opacity: 0.96;
     }
 
@@ -180,13 +224,21 @@
   </style>
 </head>
 <body>
+  <!-- colourful blobs -->
+  <div class="blob blob-1"></div>
+  <div class="blob blob-2"></div>
+  <div class="blob blob-3"></div>
+
   <div class="wrapper">
-    <div class="glow"></div>
+    <div class="glow-ring"></div>
 
     <div class="card">
-      <div class="badge">
-        <span class="badge-dot"></span>
-        LIVE DIRECT LINK API
+      <div class="header-row">
+        <div class="badge">
+          <span class="badge-dot"></span>
+          LIVE DIRECT LINK API
+        </div>
+        <span class="tag">mediafire → direct</span>
       </div>
 
       <h1>Mediafire Direct Downloader</h1>
@@ -196,7 +248,7 @@
       <input id="mf_url" type="text" placeholder="https://www.mediafire.com/file/..." />
 
       <button onclick="getDirect()">Generate Direct Link</button>
-      <p class="hint">Example: Copy full link from Mediafire share page and paste here.</p>
+      <p class="hint">Tip: Use a public Mediafire file link for best results.</p>
 
       <div id="result"></div>
     </div>
@@ -222,7 +274,7 @@
         const res = await fetch(apiUrl);
         const data = await res.json();
 
-        // yahi purana working logic hai: status + data.status check karke direct_download use
+        // yahi working structure: status + data.status + direct_download
         if (!data.status || !data.data || data.data.status !== 'success') {
           result.innerHTML = 'Failed to get direct link. Check URL and try again.';
           return;
@@ -230,7 +282,7 @@
 
         const fileName = data.data.filename;
         const size = data.data.size.readable;
-        const direct = data.data.direct_download; // agar JSON me key aur naam ka ho to yahan wahi change karna
+        const direct = data.data.direct_download; // agar JSON me key ka naam alag ho to sirf yahan change karein
 
         result.innerHTML = `
           <p><strong>File:</strong> ${fileName}</p>
@@ -243,272 +295,4 @@
     }
   </script>
 </body>
-</html>      outline: none;
-      transition: border-color 0.15s ease, box-shadow 0.15s ease, background 0.15s ease;
-    }
-
-    #mf_url::placeholder {
-      color: #6b7280;
-    }
-
-    #mf_url:focus {
-      border-color: #22c55e;
-      box-shadow: 0 0 0 1px rgba(34, 197, 94, 0.6);
-      background: radial-gradient(circle at top left, #0b1120, #020617 55%);
-    }
-
-    button {
-      width: 100%;
-      padding: 11px 12px;
-      border-radius: 999px;
-      border: none;
-      font-size: 14px;
-      font-weight: 600;
-      background: linear-gradient(135deg, #22c55e, #0ea5e9, #a855f7);
-      background-size: 200% 200%;
-      color: #020617;
-      cursor: pointer;
-      transition: transform 0.12s ease, box-shadow 0.12s ease, opacity 0.12s ease, background-position 1.5s ease;
-      box-shadow: 0 18px 35px rgba(59, 130, 246, 0.65);
-    }
-
-    button:hover {
-      background-position: 100% 0;
-    }
-
-    button:active {
-      transform: translateY(1px) scale(0.985);
-      box-shadow: 0 10px 22px rgba(59, 130, 246, 0.7);
-      opacity: 0.96;
-    }
-
-    .hint {
-      margin-top: 6px;
-      font-size: 11px;
-      color: #9ca3af;
-    }
-
-    #result {
-      margin-top: 16px;
-      font-size: 13px;
-      word-break: break-all;
-      background: radial-gradient(circle at top left, rgba(34, 197, 94, 0.16), transparent 60%);
-      border-radius: 14px;
-      padding: 10px 10px 9px;
-      border: 1px solid rgba(75, 85, 99, 0.9);
-      min-height: 34px;
-    }
-
-    #result a {
-      display: inline-block;
-      margin-top: 6px;
-      padding: 8px 12px;
-      border-radius: 999px;
-      background: linear-gradient(135deg, #22c55e, #a3e635);
-      color: #022c22;
-      font-weight: 600;
-      text-decoration: none;
-      font-size: 13px;
-      box-shadow: 0 10px 22px rgba(34, 197, 94, 0.6);
-    }
-
-    #result strong {
-      color: #e5e7eb;
-    }
-  </style>
-</head>
-<body>
-  <div class="wrapper">
-    <div class="glow"></div>
-
-    <div class="card">
-      <div class="badge">
-        <span class="badge-dot"></span>
-        LIVE DIRECT LINK API
-      </div>
-
-      <h1>Mediafire Direct Downloader</h1>
-      <p class="sub">Paste any Mediafire URL and instantly get a clean, direct download link without ads or timers.</p>
-
-      <label class="label" for="mf_url">Mediafire file URL</label>
-      <input id="mf_url" type="text" placeholder="https://www.mediafire.com/file/..." />
-
-      <button onclick="getDirect()">Generate Direct Link</button>
-      <p class="hint">Example: Copy full link from Mediafire share page and paste here.</p>
-
-      <div id="result"></div>
-    </div>
-  </div>
-
-  <script>
-    async function getDirect() {
-      const input = document.getElementById('mf_url').value.trim();
-      const result = document.getElementById('result');
-
-      if (!input) {
-        result.innerHTML = 'Please enter a Mediafire URL.';
-        return;
-      }
-
-      const apiUrl =
-        'https://mediafire-api-v1.shaitantales.workers.dev/?url=' +
-        encodeURIComponent(input);
-
-      result.innerHTML = 'Processing link...';
-
-      try {
-        const res = await fetch(apiUrl);
-        const data = await res.json();
-
-        // yahi purana working logic hai: status + data.status check karke direct_download use
-        if (!data.status || !data.data || data.data.status !== 'success') {
-          result.innerHTML = 'Failed to get direct link. Check URL and try again.';
-          return;
-        }
-
-        const fileName = data.data.filename;
-        const size = data.data.size.readable;
-        const direct = data.data.direct_download; // agar JSON me key aur naam ka ho to yahan wahi change karna
-
-        result.innerHTML = `
-          <p><strong>File:</strong> ${fileName}</p>
-          <p><strong>Size:</strong> ${size}</p>
-          <a href="${direct}" target="_blank" rel="noopener noreferrer">Download Now</a>
-        `;
-      } catch (e) {
-        result.innerHTML = 'Error contacting API. Please try again.';
-      }
-    }
-  </script>
-</body>
-</html>      margin-bottom: 10px;
-      outline: none;
-      transition: border-color 0.15s ease, box-shadow 0.15s ease, background 0.15s ease;
-    }
-
-    #mf_url::placeholder {
-      color: #6b7280;
-    }
-
-    #mf_url:focus {
-      border-color: #22c55e;
-      box-shadow: 0 0 0 1px rgba(34, 197, 94, 0.6);
-      background: radial-gradient(circle at top left, #0b1120, #020617 55%);
-    }
-
-    button {
-      width: 100%;
-      padding: 11px 12px;
-      border-radius: 999px;
-      border: none;
-      font-size: 14px;
-      font-weight: 600;
-      background: linear-gradient(135deg, #22c55e, #0ea5e9, #a855f7);
-      background-size: 200% 200%;
-      color: #020617;
-      cursor: pointer;
-      transition: transform 0.12s ease, box-shadow 0.12s ease, opacity 0.12s ease, background-position 1.5s ease;
-      box-shadow: 0 18px 35px rgba(59, 130, 246, 0.65);
-    }
-
-    button:hover {
-      background-position: 100% 0;
-    }
-
-    button:active {
-      transform: translateY(1px) scale(0.985);
-      box-shadow: 0 10px 22px rgba(59, 130, 246, 0.7);
-      opacity: 0.96;
-    }
-
-    .hint {
-      margin-top: 6px;
-      font-size: 11px;
-      color: #9ca3af;
-    }
-
-    #result {
-      margin-top: 16px;
-      font-size: 13px;
-      word-break: break-all;
-      background: radial-gradient(circle at top left, rgba(34, 197, 94, 0.16), transparent 60%);
-      border-radius: 14px;
-      padding: 10px 10px 9px;
-      border: 1px solid rgba(75, 85, 99, 0.9);
-      min-height: 34px;
-    }
-
-    #result a {
-      display: inline-block;
-      margin-top: 6px;
-      padding: 8px 12px;
-      border-radius: 999px;
-      background: linear-gradient(135deg, #22c55e, #a3e635);
-      color: #022c22;
-      font-weight: 600;
-      text-decoration: none;
-      font-size: 13px;
-      box-shadow: 0 10px 22px rgba(34, 197, 94, 0.6);
-    }
-
-    #result strong {
-      color: #e5e7eb;
-    }
-  </style>
-</head>
-<body>
-  <div class="wrapper">
-    <div class="glow"></div>
-
-    <div class="card">
-      <div class="badge">
-        <span class="badge-dot"></span>
-        LIVE DIRECT LINK API
-      </div>
-
-      <h1>Mediafire Direct Downloader</h1>
-      <p class="sub">Paste any Mediafire URL and instantly get a clean, direct download link without ads or timers.</p>
-
-      <label class="label" for="mf_url">Mediafire file URL</label>
-      <input id="mf_url" type="text" placeholder="https://www.mediafire.com/file/..." />
-
-      <button onclick="getDirect()">Generate Direct Link</button>
-      <p class="hint">Example: Copy full link from Mediafire share page and paste here.</p>
-
-      <div id="result"></div>
-    </div>
-  </div>
-
-  <script>
-    async function getDirect() {
-      const input = document.getElementById('mf_url').value.trim();
-      const result = document.getElementById('result');
-
-      if (!input) {
-        result.innerHTML = 'Please enter a Mediafire URL.';
-        return;
-      }
-
-      const apiUrl =
-        'https://mediafire-api-v1.shaitantales.workers.dev/?url=' +
-        encodeURIComponent(input);
-
-      result.innerHTML = 'Processing link...';
-
-      try {
-        const res = await fetch(apiUrl);
-        const data = await res.json();
-
-        if (!data.status || !data.data || data.data.status !== 'success') {
-          result.innerHTML = 'Failed to get direct link. Check URL and try again.';
-          return;
-        }
-
-        const fileName = data.data.filename;
-        const size = data.data.size.readable;
-        const direct = data.data.direct_download;
-
-        result.innerHTML = `
-          <p><strong>File:</strong> ${fileName}</p>
-          <p><strong>Size:</strong> ${size}</p>
-          <a href="${direct}" target="_blank" rel="noopener noreferrer">Download Now
+</html>
