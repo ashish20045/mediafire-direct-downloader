@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Mediafire Direct Download</title>
+</head>
+<body>
+  <h2>Mediafire Direct Link Generator</h2>
+
+  <input id="mf_url" type="text" placeholder="Paste Mediafire URL here" style="width: 320px;">
+  <button onclick="getDirect()">Get Direct Link</button>
+
+  <div id="result" style="margin-top: 15px;"></div>
+
+  <script>
+    async function getDirect() {
+      const input = document.getElementById('mf_url').value.trim();
+      const result = document.getElementById('result');
+
+      if (!input) {
+        result.innerHTML = 'Please enter Mediafire URL';
+        return;
+      }
+
+      const apiUrl =
+        'https://mediafire-api-v1.shaitantales.workers.dev/?url=' +
+        encodeURIComponent(input);
+
+      result.innerHTML = 'Processing...';
+
+      try {
+        const res = await fetch(apiUrl);
+        const data = await res.json();
+
+        if (!data.status || !data.data || data.data.status !== 'success') {
+          result.innerHTML = 'Failed to get direct link';
+          return;
+        }
+
+        const fileName = data.data.filename;
+        const size = data.data.size.readable;
+        const direct = data.data.direct_download;
+
+        result.innerHTML = `
+          <p><b>File:</b> ${fileName}</p>
+          <p><b>Size:</b> ${size}</p>
+          <a href="${direct}" target="_blank">Download Now</a>
+        `;
+      } catch (e) {
+        result.innerHTML = 'Error contacting API';
+      }
+    }
+  </script>
+</body>
+</html>
