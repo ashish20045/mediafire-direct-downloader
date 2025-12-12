@@ -3,14 +3,206 @@
 <head>
   <meta charset="UTF-8" />
   <title>Mediafire Direct Downloader</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
+
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: "Poppins", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
+
+    body {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: radial-gradient(circle at top left, #f97316, transparent 55%),
+                  radial-gradient(circle at top right, #22c55e, transparent 55%),
+                  radial-gradient(circle at bottom, #0ea5e9, #020617 60%);
+      color: #e5e7eb;
+      padding: 16px;
+    }
+
+    .wrapper {
+      position: relative;
+      width: 100%;
+      max-width: 460px;
+    }
+
+    .glow {
+      position: absolute;
+      inset: -40px;
+      background:
+        conic-gradient(from 160deg, #22d3ee, #a855f7, #22c55e, #facc15, #22d3ee);
+      opacity: 0.45;
+      filter: blur(28px);
+      z-index: -2;
+    }
+
+    .card {
+      position: relative;
+      background: rgba(15, 23, 42, 0.75);
+      border-radius: 22px;
+      padding: 22px 20px 20px;
+      border: 1px solid rgba(148, 163, 184, 0.5);
+      backdrop-filter: blur(20px) saturate(150%);
+      -webkit-backdrop-filter: blur(20px) saturate(150%);
+      box-shadow:
+        0 24px 60px rgba(15, 23, 42, 0.9),
+        0 0 0 1px rgba(15, 23, 42, 0.9);
+      overflow: hidden;
+    }
+
+    .badge {
+      font-size: 10px;
+      text-transform: uppercase;
+      letter-spacing: 0.14em;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 4px 10px;
+      border-radius: 999px;
+      background: rgba(15, 118, 110, 0.35);
+      border: 1px solid rgba(45, 212, 191, 0.7);
+      color: #a5f3fc;
+      margin-bottom: 10px;
+    }
+
+    .badge-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 999px;
+      background: #22c55e;
+      box-shadow: 0 0 8px rgba(34, 197, 94, 0.9);
+    }
+
+    h1 {
+      font-size: 22px;
+      margin-bottom: 4px;
+    }
+
+    .sub {
+      font-size: 12px;
+      color: #9ca3af;
+      margin-bottom: 16px;
+    }
+
+    .label {
+      font-size: 12px;
+      margin-bottom: 6px;
+      display: block;
+      color: #e5e7eb;
+    }
+
+    #mf_url {
+      width: 100%;
+      padding: 11px 12px;
+      border-radius: 12px;
+      border: 1px solid rgba(75, 85, 99, 0.9);
+      background: linear-gradient(135deg, #020617, #020617);
+      color: #e5e7eb;
+      font-size: 13px;
+      margin-bottom: 10px;
+      outline: none;
+      transition: border-color 0.15s ease, box-shadow 0.15s ease, background 0.15s ease;
+    }
+
+    #mf_url::placeholder {
+      color: #6b7280;
+    }
+
+    #mf_url:focus {
+      border-color: #22c55e;
+      box-shadow: 0 0 0 1px rgba(34, 197, 94, 0.6);
+      background: radial-gradient(circle at top left, #0b1120, #020617 55%);
+    }
+
+    button {
+      width: 100%;
+      padding: 11px 12px;
+      border-radius: 999px;
+      border: none;
+      font-size: 14px;
+      font-weight: 600;
+      background: linear-gradient(135deg, #22c55e, #0ea5e9, #a855f7);
+      background-size: 200% 200%;
+      color: #020617;
+      cursor: pointer;
+      transition: transform 0.12s ease, box-shadow 0.12s ease, opacity 0.12s ease, background-position 1.5s ease;
+      box-shadow: 0 18px 35px rgba(59, 130, 246, 0.65);
+    }
+
+    button:hover {
+      background-position: 100% 0;
+    }
+
+    button:active {
+      transform: translateY(1px) scale(0.985);
+      box-shadow: 0 10px 22px rgba(59, 130, 246, 0.7);
+      opacity: 0.96;
+    }
+
+    .hint {
+      margin-top: 6px;
+      font-size: 11px;
+      color: #9ca3af;
+    }
+
+    #result {
+      margin-top: 16px;
+      font-size: 13px;
+      word-break: break-all;
+      background: radial-gradient(circle at top left, rgba(34, 197, 94, 0.16), transparent 60%);
+      border-radius: 14px;
+      padding: 10px 10px 9px;
+      border: 1px solid rgba(75, 85, 99, 0.9);
+      min-height: 34px;
+    }
+
+    #result a {
+      display: inline-block;
+      margin-top: 6px;
+      padding: 8px 12px;
+      border-radius: 999px;
+      background: linear-gradient(135deg, #22c55e, #a3e635);
+      color: #022c22;
+      font-weight: 600;
+      text-decoration: none;
+      font-size: 13px;
+      box-shadow: 0 10px 22px rgba(34, 197, 94, 0.6);
+    }
+
+    #result strong {
+      color: #e5e7eb;
+    }
+  </style>
 </head>
 <body>
-  <h2>Mediafire Direct Link Generator</h2>
+  <div class="wrapper">
+    <div class="glow"></div>
 
-  <input id="mf_url" type="text" placeholder="Paste Mediafire URL here" style="width: 320px;" />
-  <button onclick="getDirect()">Get Direct Link</button>
+    <div class="card">
+      <div class="badge">
+        <span class="badge-dot"></span>
+        LIVE DIRECT LINK API
+      </div>
 
-  <div id="result" style="margin-top: 15px;"></div>
+      <h1>Mediafire Direct Downloader</h1>
+      <p class="sub">Paste any Mediafire URL and instantly get a clean, direct download link without ads or timers.</p>
+
+      <label class="label" for="mf_url">Mediafire file URL</label>
+      <input id="mf_url" type="text" placeholder="https://www.mediafire.com/file/..." />
+
+      <button onclick="getDirect()">Generate Direct Link</button>
+      <p class="hint">Example: Copy full link from Mediafire share page and paste here.</p>
+
+      <div id="result"></div>
+    </div>
+  </div>
 
   <script>
     async function getDirect() {
@@ -18,7 +210,7 @@
       const result = document.getElementById('result');
 
       if (!input) {
-        result.innerHTML = 'Please enter Mediafire URL';
+        result.innerHTML = 'Please enter a Mediafire URL.';
         return;
       }
 
@@ -26,14 +218,14 @@
         'https://mediafire-api-v1.shaitantales.workers.dev/?url=' +
         encodeURIComponent(input);
 
-      result.innerHTML = 'Processing...';
+      result.innerHTML = 'Processing link...';
 
       try {
         const res = await fetch(apiUrl);
         const data = await res.json();
 
         if (!data.status || !data.data || data.data.status !== 'success') {
-          result.innerHTML = 'Failed to get direct link';
+          result.innerHTML = 'Failed to get direct link. Check URL and try again.';
           return;
         }
 
@@ -42,14 +234,6 @@
         const direct = data.data.direct_download;
 
         result.innerHTML = `
-          <p><b>File:</b> ${fileName}</p>
-          <p><b>Size:</b> ${size}</p>
-          <a href="${direct}" target="_blank">Download Now</a>
-        `;
-      } catch (e) {
-        result.innerHTML = 'Error contacting API';
-      }
-    }
-  </script>
-</body>
-</html>
+          <p><strong>File:</strong> ${fileName}</p>
+          <p><strong>Size:</strong> ${size}</p>
+          <a href="${direct}" target="_blank" rel="noopener noreferrer">Download Now
